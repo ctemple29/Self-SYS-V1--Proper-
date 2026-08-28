@@ -1,0 +1,2 @@
+In practice, the blue tone picked out during the design phase does not exactly seem to be visually appealing to my tastes, as such a darker blue was utilised.
+Added a small fade-in effect to the hover so it is not so aggressive with the revealing nature of it. 
