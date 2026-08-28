@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Nature and Architecture Explorer</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="Style.css">
+</head>
+<body>
+	<main>
+		<section class="explorer" aria-labelledby="explorer-title">
+			<div class="instructions">
+				<ul>
+					<li id="explorer-title">Nature and Architecture Explorer</li>
+					<li>Rules
+						<ul>
+							<li>Only the central part of the image is revealed first.</li>
+							<li>User must hover over other segments to reveal image.</li>
+							<li>Only examples of architecture and natural environments are displayed.</li>
+							<li>User must click to randomise selected display image.</li>
+						</ul>
+					</li>
+					<li>Controls: Use the mouse to hover over empty portions, click to randomise selection.</li>
+				</ul>
+			</div>
+			<canvas id="canvas" aria-label="Interactive segmented image canvas"></canvas>
+		</section>
+	</main>
+	<script src="Script.JS"></script>
+</body>
+</html>
