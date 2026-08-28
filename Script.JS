@@ -14,11 +14,13 @@ const palette = {
 
 let pixelRatio = 1;
 const revealDuration = 500;
+const trailDuration = 450;
 let selectedLandscape = Math.floor(Math.random() * landscapeImages.length);
 let availableLandscapes = landscapeImages
 	.map((_, index) => index)
 	.filter((index) => index !== selectedLandscape);
 const revealProgress = new Map();
+const sigilTrail = [];
 let revealAnimationFrame;
 
 landscapeImages.forEach(({ image, source }) => {
@@ -34,6 +36,32 @@ function resizeCanvas() {
 	canvas.style.height = `${Math.max(window.innerHeight * 0.82, 520)}px`;
 	context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
 	draw();
+}
+
+function drawFigure(x, y, scale, opacity) {
+	const headRadius = 4 * scale;
+	const bodyLength = 13 * scale;
+	const limbLength = 8 * scale;
+
+	context.save();
+	context.globalAlpha = opacity;
+	context.strokeStyle = '#D8E9F0';
+	context.lineWidth = Math.max(1, 1.5 * scale);
+	context.lineCap = 'round';
+	context.beginPath();
+	context.arc(x, y - bodyLength - headRadius, headRadius, 0, Math.PI * 2);
+	context.moveTo(x, y - bodyLength);
+	context.lineTo(x, y);
+	context.moveTo(x, y - bodyLength + 4 * scale);
+	context.lineTo(x - limbLength, y - bodyLength + scale);
+	context.moveTo(x, y - bodyLength + 4 * scale);
+	context.lineTo(x + limbLength, y - bodyLength + scale);
+	context.moveTo(x, y);
+	context.lineTo(x - limbLength, y + limbLength);
+	context.moveTo(x, y);
+	context.lineTo(x + limbLength, y + limbLength);
+	context.stroke();
+	context.restore();
 }
 
 function drawSegmentedImage(image, x, y, width, height) {
@@ -116,6 +144,17 @@ function draw(timestamp = performance.now()) {
 		height
 	);
 
+	while (sigilTrail.length && timestamp - sigilTrail[0].createdAt >= trailDuration) {
+		sigilTrail.shift();
+	}
+	sigilTrail.forEach(({ x, y, createdAt }) => {
+		const progress = (timestamp - createdAt) / trailDuration;
+		drawFigure(x, y, 1 - progress * 0.25, 1 - progress);
+	});
+	if (sigilTrail.length) {
+		animationRunning = true;
+	}
+
 	if (animationRunning) {
 		revealAnimationFrame = requestAnimationFrame(draw);
 	}
@@ -123,6 +162,16 @@ function draw(timestamp = performance.now()) {
 }
 
 canvas.addEventListener('pointermove', (event) => {
+	const canvasBounds = canvas.getBoundingClientRect();
+	sigilTrail.push({
+		x: event.clientX - canvasBounds.left,
+		y: event.clientY - canvasBounds.top,
+		createdAt: performance.now()
+	});
+	if (sigilTrail.length > 28) {
+		sigilTrail.shift();
+	}
+
 	const segment = Math.floor(event.clientX / (window.innerWidth / 3));
 	if (segment === 0 || segment === 2) {
 		if (!revealProgress.has(segment)) {
@@ -130,8 +179,8 @@ canvas.addEventListener('pointermove', (event) => {
 			cancelAnimationFrame(revealAnimationFrame);
 			revealAnimationFrame = requestAnimationFrame(draw);
 		}
-		draw();
 	}
+	draw();
 });
 
 canvas.addEventListener('pointerdown', (event) => {
