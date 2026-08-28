@@ -1,9 +1,9 @@
 const canvas = document.querySelector('#canvas');
 const context = canvas.getContext('2d');
 const landscapeImages = [
-	{ image: new Image(), source: 'Camelback.jpg' },
-	{ image: new Image(), source: 'Notre-Dame_west-facade.avif' },
-	{ image: new Image(), source: 'Rocky Mountains.webp' }
+	{ image: new Image(), source: 'Images Used In Sys/Camelback.jpg' },
+	{ image: new Image(), source: 'Images Used In Sys/Notre-Dame_west-facade.avif' },
+	{ image: new Image(), source: 'Images Used In Sys/Rocky Mountains.webp' }
 ];
 
 const palette = {
