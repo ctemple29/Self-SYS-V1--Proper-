@@ -1,9 +1,18 @@
 const canvas = document.querySelector('#canvas');
 const context = canvas.getContext('2d');
 const landscapeImages = [
+	{ image: new Image(), source: 'Images Used In Sys/Arctic glaciers.avif' },
 	{ image: new Image(), source: 'Images Used In Sys/Camelback.jpg' },
+	{ image: new Image(), source: 'Images Used In Sys/Cathedral-of-St-Basil-the-Blessed-Moscow.webp' },
+	{ image: new Image(), source: 'Images Used In Sys/Glacier_national_park.jpg' },
+	{ image: new Image(), source: 'Images Used In Sys/Great_Hall_of_the_People.jpg' },
+	{ image: new Image(), source: 'Images Used In Sys/North Face Mt. Everest.webp' },
 	{ image: new Image(), source: 'Images Used In Sys/Notre-Dame_west-facade.avif' },
-	{ image: new Image(), source: 'Images Used In Sys/Rocky Mountains.webp' }
+	{ image: new Image(), source: 'Images Used In Sys/Rocky Mountains.webp' },
+	{ image: new Image(), source: 'Images Used In Sys/The_Alps.jpeg' },
+	{ image: new Image(), source: 'Images Used In Sys/appalacian-mountains.webp' },
+	{ image: new Image(), source: 'Images Used In Sys/crater-lake-sunset.jpg' },
+	{ image: new Image(), source: 'Images Used In Sys/st-peters-basilica.webp' }
 ];
 
 const palette = {
