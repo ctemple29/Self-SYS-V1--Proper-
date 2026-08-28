@@ -26,16 +26,12 @@ landscapeImages.forEach(({ image, source }) => {
 	image.addEventListener('load', draw);
 });
 
-function getHeaderHeight() {
-	return Math.max(230, Math.min(350, window.innerHeight * 0.36));
-}
-
 function resizeCanvas() {
 	pixelRatio = window.devicePixelRatio || 1;
 	canvas.width = Math.floor(window.innerWidth * pixelRatio);
-	canvas.height = Math.floor(window.innerHeight * pixelRatio);
+	canvas.height = Math.floor(Math.max(window.innerHeight * 0.82, 520) * pixelRatio);
 	canvas.style.width = `${window.innerWidth}px`;
-	canvas.style.height = `${window.innerHeight}px`;
+	canvas.style.height = `${Math.max(window.innerHeight * 0.82, 520)}px`;
 	context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
 	draw();
 }
@@ -100,9 +96,7 @@ function drawSegmentedImage(image, x, y, width, height) {
 
 function draw(timestamp = performance.now()) {
 	const width = window.innerWidth;
-	const height = window.innerHeight;
-	const headerHeight = getHeaderHeight();
-	const imageHeight = Math.max(1, height - headerHeight);
+	const height = Math.max(window.innerHeight * 0.82, 520);
 
 	context.clearRect(0, 0, width, height);
 	context.fillStyle = palette.primary;
@@ -114,30 +108,21 @@ function draw(timestamp = performance.now()) {
 		animationRunning ||= reveal.progress < 1;
 	});
 
-	context.fillStyle = 'rgba(0, 0, 0, 0.18)';
-	context.fillRect(0, headerHeight - 1, width, 1);
 	drawSegmentedImage(
 		landscapeImages[selectedLandscape].image,
 		0,
-		headerHeight,
+		0,
 		width,
-		imageHeight
+		height
 	);
 
 	if (animationRunning) {
 		revealAnimationFrame = requestAnimationFrame(draw);
 	}
 
-	context.fillStyle = '#4C2FB5';
-	context.fillRect(0, headerHeight, width, 5);
 }
 
 canvas.addEventListener('pointermove', (event) => {
-	const headerHeight = getHeaderHeight();
-	if (event.clientY < headerHeight) {
-		return;
-	}
-
 	const segment = Math.floor(event.clientX / (window.innerWidth / 3));
 	if (segment === 0 || segment === 2) {
 		if (!revealProgress.has(segment)) {
@@ -150,10 +135,6 @@ canvas.addEventListener('pointermove', (event) => {
 });
 
 canvas.addEventListener('pointerdown', (event) => {
-	if (event.clientY < getHeaderHeight()) {
-		return;
-	}
-
 	if (availableLandscapes.length === 0) {
 		availableLandscapes = landscapeImages
 			.map((_, index) => index)
